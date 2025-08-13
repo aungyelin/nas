@@ -1,5 +1,5 @@
 //
-//  Article.swift
+//  NewsResponse.swift
 //  Nas
 //
 //  Created by Ye Lin Aung on 13/08/2025.
@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct Article: Codable {
-    var source: Source?
+struct NewsResponse: Codable {
+    var status: String
+    var totalResults: Int
+    var articles: [ArticleDto]
+}
+
+struct ArticleDto: Codable {
+    var source: SourceDto?
     var author: String?
     var title: String?
     var description: String?
@@ -18,7 +24,7 @@ struct Article: Codable {
     var content: String?
 }
 
-struct Source: Codable {
+struct SourceDto: Codable {
     var id: String?
     var name: String?
 }

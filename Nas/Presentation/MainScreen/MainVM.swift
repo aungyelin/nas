@@ -34,6 +34,8 @@ class MainVM: NSObject, HasDisposeBag {
         return getNewsUseCase.execute()
             .do(onSuccess: { articles in
                 print("fetchNews: success")
+            }, onError: { e in
+                print("fetchNews: failed with error - \(e.localizedDescription)")
             })
             .asCompletable()
     }

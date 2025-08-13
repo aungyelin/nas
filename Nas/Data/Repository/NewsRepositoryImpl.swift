@@ -10,8 +10,16 @@ import RxSwift
 
 class NewsRepositoryImpl: NewsRepository {
     
-    func getNews() -> RxSwift.Single<[Article]> {
-        return Single.just([]).delay(.seconds(2), scheduler: MainScheduler.instance)
+    func getNews() -> Single<[Article]> {
+        return ApiService.shared.getNews()
+            .map { $0.articles.map { dto in dto.toDomain() } }
+            .catch { error in
+                if let networkError = error as? NetworkError {
+                    return Single.error(networkError.toDomain())
+                } else {
+                    return Single.error(error)
+                }
+            }
     }
     
 }
