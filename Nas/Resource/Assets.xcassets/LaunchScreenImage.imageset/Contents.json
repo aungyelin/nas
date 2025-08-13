@@ -1,26 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "News-Logo-Full-Light 1.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
-      "filename" : "News-Logo-Full-Light.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
       "filename" : "News-Logo-Full-Dark.png",
       "idiom" : "universal"
     }

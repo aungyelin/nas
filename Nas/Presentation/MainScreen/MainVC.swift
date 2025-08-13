@@ -8,12 +8,29 @@
 import UIKit
 
 class MainVC: UIViewController {
+    
+    private let mainVM = MainVM.shared
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupUI()
+        self.subscribeData()
         
+        self.fetchData()
+    }
+    
+    private func setupUI() {
+        
+    }
+    
+    private func subscribeData() {
+        
+    }
+    
+    private func fetchData() {
+        self.mainVM.fetchNews()
     }
 
 }
-
