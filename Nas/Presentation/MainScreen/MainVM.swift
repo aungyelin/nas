@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 import FactoryKit
 
 class MainVM: NSObject, HasDisposeBag {
@@ -15,18 +16,26 @@ class MainVM: NSObject, HasDisposeBag {
     
     @Injected(\.getNewsUseCase) private var getNewsUseCase
     
+    private let refreshingRelay = BehaviorRelay<Bool>(value: false)
+    var refreshingDriver: Driver<Bool> { return refreshingRelay.asDriver() }
     
-    func fetchNews() {
-        getNewsUseCase.execute()
-            .subscribe(
-                onSuccess: { model in
-                    print("fetchNews: success")
-                },
-                onFailure: { error in
-                    print("fetchNews: failed by error \(error.localizedDescription)")
-                }
-            )
-            .disposed(by: disposeBag)
+    
+    func fetchAllData() {
+        Completable.zip([
+            self.fetchNews()
+        ])
+        .asDriver(onErrorDriveWith: .empty())
+        .attach(refreshingRelay)
+        .drive()
+        .disposed(by: disposeBag)
+    }
+    
+    func fetchNews() -> Completable {
+        return getNewsUseCase.execute()
+            .do(onSuccess: { articles in
+                print("fetchNews: success")
+            })
+            .asCompletable()
     }
     
 }

@@ -17,6 +17,7 @@ public protocol HasDisposeBag: AnyObject {
     
     /// a unique RxSwift DisposeBag instance
     var disposeBag: DisposeBag { get set }
+    
 }
 
 extension HasDisposeBag {
