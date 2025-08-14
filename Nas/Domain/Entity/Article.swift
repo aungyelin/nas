@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Differentiator
 
-struct Article: Codable {
+struct Article: Codable, IdentifiableType, Equatable {
     var source: Source?
     var author: String?
     var title: String?
@@ -16,9 +17,17 @@ struct Article: Codable {
     var urlToImage: String?
     var publishedAt: String?
     var content: String?
+    
+    var identity: String {
+        return UUID().uuidString
+    }
 }
 
-struct Source: Codable {
+struct Source: Codable, IdentifiableType, Equatable {
     var id: String?
     var name: String?
+    
+    var identity: String {
+        return UUID().uuidString
+    }
 }

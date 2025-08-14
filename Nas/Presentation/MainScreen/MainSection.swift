@@ -13,9 +13,16 @@ enum MainSection {
     case news               (items: [MainSectionItem])
 }
 
-enum MainSectionItem {
-    case stock              (stock: Stock)
-    case news               (article: Article)
+extension MainSection: AnimatableSectionModelType {
+    typealias Identity = String
+    
+    var identity: String {
+        switch self {
+        case .stocks:           return "stocks"
+        case .highlightedNews:  return "highlightedNews"
+        case .news:             return "news"
+        }
+    }
 }
 
 extension MainSection: SectionModelType {
@@ -34,6 +41,22 @@ extension MainSection: SectionModelType {
         case .stocks: self = .stocks(items: items)
         case .highlightedNews: self = .highlightedNews(items: items)
         case .news: self = .news(items: items)
+        }
+    }
+}
+
+enum MainSectionItem {
+    case stock              (stock: Stock)
+    case news               (article: Article)
+}
+
+extension MainSectionItem: IdentifiableType, Equatable {
+    typealias Identity = String
+    
+    var identity: String {
+        switch self {
+        case .stock(stock: let stock): return stock.identity
+        case .news(article: let article): return article.identity
         }
     }
 }

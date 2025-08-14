@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import Differentiator
 
-struct Stock {
+struct Stock: IdentifiableType, Equatable {
     var name: String
     var price: Double
+    
+    var identity: String {
+        return UUID().uuidString
+    }
 }
