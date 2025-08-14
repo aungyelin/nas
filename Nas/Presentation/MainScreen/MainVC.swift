@@ -33,7 +33,17 @@ class MainVC: UIViewController, RefreshableConrtoller {
     }
     
     private func subscribeData() {
-        
+        mainVM.errorDriver
+            .drive(onNext: { [weak self] error in
+                self?.showAlert(error: error)
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
+    private func showAlert(error: NasError) {
+        let alert = UIAlertController(title: "Error", message: error.message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
 }

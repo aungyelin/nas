@@ -14,4 +14,8 @@ extension Container {
         Factory(self) { NewsRepositoryImpl() }
     }
     
+    var stockRepository: Factory<StockRepository> {
+        Factory(self) { StockRepositoryImpl() }
+    }
+    
 }

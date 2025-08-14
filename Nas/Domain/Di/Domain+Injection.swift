@@ -14,4 +14,8 @@ extension Container {
         Factory(self) { GetNewsUseCaseImpl() }
     }
     
+    var getStockUseCase: Factory<GetStockUseCase> {
+        Factory(self) { GetStockUseCaseImpl() }
+    }
+    
 }

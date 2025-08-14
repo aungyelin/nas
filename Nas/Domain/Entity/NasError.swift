@@ -11,7 +11,7 @@ import Alamofire
 struct NasError: Error {
     enum ErrorType {
         case network
-        case json
+        case csv
         case unknown
     }
     
