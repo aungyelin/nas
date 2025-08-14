@@ -23,6 +23,12 @@ class MainVM: NSObject, HasDisposeBag {
     private let errorRelay = PublishRelay<NasError>()
     var errorDriver: Driver<NasError> { return errorRelay.asDriver(onErrorDriveWith: .empty()) }
     
+    private let stocksRelay = BehaviorRelay<[Stock]?>(value: nil)
+    var stocksDriver: Driver<[Stock]?> { return stocksRelay.asDriver() }
+    
+    private let newsRelay = BehaviorRelay<[Article]?>(value: nil)
+    var newsDriver: Driver<[Article]?> { return newsRelay.asDriver() }
+    
     
     func fetchAllData() {
         Completable.zip([
@@ -36,8 +42,6 @@ class MainVM: NSObject, HasDisposeBag {
             } else {
                 self?.errorRelay.accept(NasError(type: .unknown, message: e.localizedDescription))
             }
-        }, onCompleted: {
-            self.getStockDataChanges()
         })
         .subscribe()
         .disposed(by: disposeBag)
@@ -53,24 +57,51 @@ class MainVM: NSObject, HasDisposeBag {
             .disposed(by: disposeBag)
     }
     
-    func fetchNews() -> Completable {
-        return getNewsUseCase.execute()
-            .do(onSuccess: { articles in
-                print("fetchNews: success")
+    func fetchStocks() -> Completable {
+        return getStockUseCase.execute()
+            .do(onSuccess: { stocks in
+                self.stocksRelay.accept(stocks)
             })
             .asCompletable()
     }
     
-    func fetchStocks() -> Completable {
-        return getStockUseCase.execute()
-            .do(onSuccess: { stocks in
-                print("fetchStocks: success with \(stocks.count) stocks")
-                for stock in stocks {
-                    print("\(stock.name) -> \(stock.price)")
-                }
-                print("-----------------------------")
+    func fetchNews() -> Completable {
+        return getNewsUseCase.execute()
+            .do(onSuccess: { articles in
+                self.newsRelay.accept(articles)
             })
             .asCompletable()
+    }
+    
+    var cellDriver: Driver<[MainSection]> {
+        
+        return Driver<[MainSection]>.combineLatest(stocksDriver, newsDriver) { stocks, news in
+            
+            var sections: [MainSection] = []
+            
+            if let data = stocks {
+                let stockItems = data.map { MainSectionItem.stock(stock: $0) }
+                
+                if !stockItems.isEmpty {
+                    sections.append(.stocks(items: stockItems))
+                }
+            }
+            if let data = news {
+                let highlightedNewsItems = data.prefix(6).map { MainSectionItem.news(article: $0) }
+                let remainingNewsItems = data.dropFirst(6).map { MainSectionItem.news(article: $0) }
+                
+                if !highlightedNewsItems.isEmpty {
+                    sections.append(.highlightedNews(items: highlightedNewsItems))
+                }
+                if !remainingNewsItems.isEmpty {
+                    sections.append(.news(items: remainingNewsItems))
+                }
+            }
+            
+            return sections
+            
+        }
+        
     }
     
 }
