@@ -7,11 +7,14 @@
 
 import Foundation
 import RxSwift
+import FactoryKit
 
 class NewsRepositoryImpl: NewsRepository {
     
+    @Injected(\.apiService) private var apiService
+    
     func getNews() -> Single<[Article]> {
-        return ApiService.shared.getNews()
+        return apiService.getNews()
             .map { $0.articles.map { dto in dto.toDomain() } }
             .catch { error in
                 if let networkError = error as? NetworkError {

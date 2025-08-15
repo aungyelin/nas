@@ -9,7 +9,11 @@
 import Foundation
 import RxSwift
 
-class CsvReader {
+protocol CsvReaderProtocol {
+    func getStocks() -> Single<[StockDto]>
+}
+
+class CsvReader: CsvReaderProtocol {
     
     static let shared = CsvReader()
     

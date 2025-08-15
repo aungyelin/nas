@@ -7,11 +7,14 @@
 
 import Foundation
 import RxSwift
+import FactoryKit
 
 class StockRepositoryImpl: StockRepository {
     
+    @Injected(\.csvReader) private var csvReader
+    
     func getStocks() -> Single<[Stock]> {
-        return CsvReader.shared.getStocks()
+        return csvReader.getStocks()
             .map { dtos in dtos.map { $0.toDomain() } }
             .catch { error in
                 if let localError = error as? LocalError {

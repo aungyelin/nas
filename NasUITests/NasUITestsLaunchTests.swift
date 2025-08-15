@@ -30,4 +30,5 @@ final class NasUITestsLaunchTests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+    
 }

@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-struct NasError: Error {
+struct NasError: Error, Equatable {
     enum ErrorType {
         case network
         case csv

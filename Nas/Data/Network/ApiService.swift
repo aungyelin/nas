@@ -8,7 +8,11 @@
 import Foundation
 import RxSwift
 
-class ApiService {
+protocol ApiServiceProtocol {
+    func getNews() -> Single<NewsResponse>
+}
+
+class ApiService: ApiServiceProtocol {
     
     static let shared = ApiService()
     

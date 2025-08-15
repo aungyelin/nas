@@ -7,7 +7,30 @@
 		<key>Nas.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>3</integer>
+		</dict>
+		<key>Rx (Playground).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>0B0B0E812E4B46F600AC8032</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0B0B0E972E4B46FF00AC8032</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0B0B0EA12E4B470000AC8032</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
