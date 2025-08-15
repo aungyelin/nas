@@ -80,7 +80,7 @@ class MainVM: NSObject, HasDisposeBag {
             var sections: [MainSection] = []
             
             if let data = stocks {
-                let stockItems = data.map { MainSectionItem.stock(stock: $0) }
+                let stockItems = data.map { MainSectionItem.stock(stock: $0, viewModel: MainVM.shared) }
                 
                 if !stockItems.isEmpty {
                     sections.append(.stocks(items: stockItems))

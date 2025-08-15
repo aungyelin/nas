@@ -49,9 +49,18 @@ class StockCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 8
     }
 
-    func configure(with stock: Stock) {
+    func configure(with stock: Stock, viewModel: MainVM) {
         nameLabel.text = stock.name
-        priceLabel.text = String(format: "%.2f", stock.price)
+        
+        viewModel.stocksDriver
+            .filterNil()
+            .do(onNext: { stocks in
+                if let price = stocks.filter({ $0.identity == stock.identity }).first?.price {
+                    self.priceLabel.text = String(format: "%.2f", price)
+                }
+            })
+            .drive()
+            .disposed(by: rx.disposeBag)
     }
     
 }

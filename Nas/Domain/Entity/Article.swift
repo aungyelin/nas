@@ -19,7 +19,7 @@ struct Article: Codable, IdentifiableType, Equatable {
     var content: String?
     
     var identity: String {
-        return UUID().uuidString
+        return url ?? UUID().uuidString
     }
 }
 
@@ -28,6 +28,6 @@ struct Source: Codable, IdentifiableType, Equatable {
     var name: String?
     
     var identity: String {
-        return UUID().uuidString
+        return id ?? UUID().uuidString
     }
 }

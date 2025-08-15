@@ -13,6 +13,10 @@ struct Stock: IdentifiableType, Equatable {
     var price: Double
     
     var identity: String {
-        return UUID().uuidString
+        return name
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.name == rhs.name
     }
 }

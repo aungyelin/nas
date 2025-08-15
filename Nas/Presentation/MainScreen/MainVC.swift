@@ -13,7 +13,7 @@ class MainVC: UIViewController, RefreshableConrtoller {
     private let mainVM = MainVM.shared
     
     private var collectionView: UICollectionView!
-    private var dataSource: RxCollectionViewSectionedReloadDataSource<MainSection>!
+    private var dataSource: RxCollectionViewSectionedAnimatedDataSource<MainSection>!
     
     
     override func viewDidLoad() {
@@ -168,12 +168,12 @@ extension MainVC {
     
     private func configureDataSource() {
         
-        self.dataSource = RxCollectionViewSectionedReloadDataSource<MainSection>(
+        self.dataSource = RxCollectionViewSectionedAnimatedDataSource<MainSection>(
             configureCell: { dataSource, collectionView, indexPath, item in
                 switch item {
-                case .stock(let stock):
+                case .stock(let stock, let viewModel):
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StockCell.reuseIdentifier, for: indexPath) as! StockCell
-                    cell.configure(with: stock)
+                    cell.configure(with: stock, viewModel: viewModel)
                     return cell
                 case .news(let article):
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ArticleCell.reuseIdentifier, for: indexPath) as! ArticleCell
