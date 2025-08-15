@@ -8,6 +8,6 @@
 import Foundation
 
 struct StockDto {
-    let stock: String
+    let name: String
     let price: Double
 }

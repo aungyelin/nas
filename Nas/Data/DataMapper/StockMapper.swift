@@ -13,7 +13,7 @@ extension StockDto: DomainMappable {
     
     func toDomain() -> Stock {
         return Stock(
-            name: self.stock,
+            name: self.name,
             price: self.price
         )
     }
