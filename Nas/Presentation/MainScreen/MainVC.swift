@@ -38,7 +38,7 @@ class MainVC: UIViewController, RefreshableConrtoller {
     }
     
     private func subscribeData() {
-        mainVM.cellDriver
+        mainVM.sectionDriver
             .drive(collectionView.rx.items(dataSource: self.dataSource))
             .disposed(by: rx.disposeBag)
         
@@ -88,6 +88,7 @@ extension MainVC {
         
         collectionView.register(StockCell.self, forCellWithReuseIdentifier: StockCell.reuseIdentifier)
         collectionView.register(ArticleCell.self, forCellWithReuseIdentifier: ArticleCell.reuseIdentifier)
+        collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
@@ -115,6 +116,10 @@ extension MainVC {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         section.interGroupSpacing = 10
         
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
         return section
     }
     
@@ -130,6 +135,10 @@ extension MainVC {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         section.interGroupSpacing = 10
         
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
         return section
     }
     
@@ -144,6 +153,10 @@ extension MainVC {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         section.interGroupSpacing = 10
         
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
         return section
     }
     
@@ -155,23 +168,29 @@ extension MainVC {
     
     private func configureDataSource() {
         
-        self.dataSource = RxCollectionViewSectionedReloadDataSource<MainSection>(configureCell: { dataSource, collectionView, indexPath, item in
-            
-            switch item {
-                
-            case .stock(let stock):
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StockCell.reuseIdentifier, for: indexPath) as! StockCell
-                cell.configure(with: stock)
-                return cell
-                
-            case .news(let article):
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ArticleCell.reuseIdentifier, for: indexPath) as! ArticleCell
-                cell.configure(with: article)
-                return cell
-                
+        self.dataSource = RxCollectionViewSectionedReloadDataSource<MainSection>(
+            configureCell: { dataSource, collectionView, indexPath, item in
+                switch item {
+                case .stock(let stock):
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StockCell.reuseIdentifier, for: indexPath) as! StockCell
+                    cell.configure(with: stock)
+                    return cell
+                case .news(let article):
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ArticleCell.reuseIdentifier, for: indexPath) as! ArticleCell
+                    cell.configure(with: article)
+                    return cell
+                }
+            },
+            configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+                let header = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: SectionHeaderView.reuseIdentifier,
+                    for: indexPath
+                ) as! SectionHeaderView
+                header.configure(with: dataSource[indexPath.section].title)
+                return header
             }
-            
-        })
+        )
         
     }
     

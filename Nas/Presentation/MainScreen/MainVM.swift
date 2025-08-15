@@ -73,7 +73,7 @@ class MainVM: NSObject, HasDisposeBag {
             .asCompletable()
     }
     
-    var cellDriver: Driver<[MainSection]> {
+    var sectionDriver: Driver<[MainSection]> {
         
         return Driver<[MainSection]>.combineLatest(stocksDriver, newsDriver) { stocks, news in
             

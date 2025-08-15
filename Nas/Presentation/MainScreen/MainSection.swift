@@ -11,6 +11,14 @@ enum MainSection {
     case stocks             (items: [MainSectionItem])
     case highlightedNews    (items: [MainSectionItem])
     case news               (items: [MainSectionItem])
+    
+    var title: String {
+        switch self {
+        case .stocks:           return "Stocks"
+        case .highlightedNews:  return "Recent News"
+        case .news:             return "News"
+        }
+    }
 }
 
 extension MainSection: AnimatableSectionModelType {
