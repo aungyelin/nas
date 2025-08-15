@@ -55,6 +55,7 @@ extension MainSection: SectionModelType {
 
 enum MainSectionItem {
     case stock              (stock: Stock, viewModel: MainVM)
+    case highlightNews      (article: Article)
     case news               (article: Article)
 }
 
@@ -64,6 +65,7 @@ extension MainSectionItem: IdentifiableType, Equatable {
     var identity: String {
         switch self {
         case .stock(stock: let stock, viewModel: _): return stock.identity
+        case .highlightNews(article: let article): return article.identity
         case .news(article: let article): return article.identity
         }
     }

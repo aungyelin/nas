@@ -87,7 +87,7 @@ class MainVM: NSObject, HasDisposeBag {
                 }
             }
             if let data = news {
-                let highlightedNewsItems = data.prefix(6).map { MainSectionItem.news(article: $0) }
+                let highlightedNewsItems = data.prefix(6).map { MainSectionItem.highlightNews(article: $0) }
                 let remainingNewsItems = data.dropFirst(6).map { MainSectionItem.news(article: $0) }
                 
                 if !highlightedNewsItems.isEmpty {
